@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master, main]
     paths-ignore:
       - "assets/**"
   pull_request:
@@ -19,7 +19,7 @@ jobs:
         run: |
           python3 - <<'EOF'
           from pathlib import Path
-          skills = sorted(Path("skills").glob("learnmuse-*/"))
+          skills = sorted(Path("skills").glob("*/"))
           assert skills, "no skills found"
           for skill in skills:
               assert (skill / "SKILL.md").is_file(), f"missing SKILL.md in {skill}"
@@ -51,7 +51,7 @@ jobs:
           sources = doc.get("sources", [])
           assert sources, "no sources in sources.yaml"
           covered = {c for s in sources for c in s.get("covers", [])}
-          missing = [p.name for p in Path("skills").glob("learnmuse-*/")
+          missing = [p.name for p in Path("skills").glob("*/")
                      if p.name not in covered]
           assert not missing, f"skills missing from sources.yaml covers: {missing}"
           print(f"{len(sources)} sources OK, all skills covered")
