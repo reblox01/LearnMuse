@@ -1,0 +1,5 @@
+name: learnmuse-orchestrator
+title: LearnMuse orchestrator
+description: Run a LearnMuse learning review end to end. Owns the approval gate, the review log, and the budgets. Invoke first for any learning review, curator pass, or teach-Muse run.
+category: Work and knowledge
+include_in_prompt: false
