@@ -24,13 +24,19 @@ Hermes itself is MIT-licensed, and its mechanisms are credited in
 ## Quick start
 
 In Muse.ai: no terminal needed. Ask Muse to install the pack, and
-it fetches the skills from the repo. Paste this:
+it fetches the skills from the repo and sets up the daily review.
+Paste this, one prompt does the whole setup:
 
 ```text
 Install the LearnMuse skill pack from https://github.com/reblox01/LearnMuse
 and run a learning review on my last session.
 Stage every proposal, verify each one, and install nothing
 without my approval for that exact change.
+Then set up a daily LearnMuse review: once a day, review
+yesterday's work from my files, stage at most 5 proposals,
+verify each one separately, and only tell me when one is
+verified and worth my approval. Never install, commit, or
+push from the daily review.
 ```
 
 Same install, other jobs:
