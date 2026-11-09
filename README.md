@@ -1,6 +1,6 @@
-![LearnMuse banner](assets/banner.jpg)
-
 # LearnMuse
+
+![LearnMuse banner](assets/banner-v2.jpg)
 
 **LearnMuse - Muse that learns, built for Muse.ai.**
 
