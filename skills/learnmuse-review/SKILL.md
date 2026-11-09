@@ -36,6 +36,18 @@ wait, or say so and stop.
    new to learn, you write "Nothing to save" in the log and
    stop. You never invent a proposal to fill a quota.
 
+Nudge counter (approximate, Muse has no daemon counter).
+Keep a review-log state file in
+`learnmuse-runs/review-state.md` with two counts: user
+turns since the last memory review, and tool iterations
+since the last skill review. Increment them in the review
+log. Fire a memory review at 10 turns and a skill review
+at 10 tool iterations, the same numbers as Hermes code.
+Label both counts approximate in every report. If the
+state file is missing, start both counts at 0 and say so.
+The daily cron is the backstop: it runs the review even
+if the counts were never kept.
+
 If the evidence is missing, say which evidence is missing
 and stop. A review without evidence is a guess.
 
