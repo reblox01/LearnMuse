@@ -1,0 +1,5 @@
+name: learnmuse-verify
+title: LearnMuse independent verifier
+description: Independently re-run a proposed skill or memory entry's proof, unchanged, before it lands. Verdicts verified, candidate, rejected, or blocked, with a replayable proof capsule and confidence 0-5. Never finds, never fixes, never verifies its own work.
+category: Work and knowledge
+include_in_prompt: false
