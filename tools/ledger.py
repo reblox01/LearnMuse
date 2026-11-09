@@ -20,6 +20,10 @@ Usage:
   A row with verdict "verified" cannot be self-certified: it needs
   --verified-by with a verifier identity different from --author.
   Without that, the add is rejected with a non-zero exit.
+  The same gate applies to status "verified": a row with
+  --status verified needs --verified-by different from --author,
+  or the add is rejected the same way. Status is not a way
+  around the verdict gate.
   python3 tools/ledger.py add --db <db> --id deploy-staging \\
       --title "Deploy staging: run migrate before restart" --kind skill \\
       --status verified --confidence 4 --verdict verified \\
@@ -94,6 +98,16 @@ def cmd_add(args):
             return 2
         if args.verified_by == args.author:
             print("refused: verdict 'verified' cannot be self-certified: "
+                  "--verified-by must differ from --author",
+                  file=sys.stderr)
+            return 2
+    if args.status == "verified":
+        if not args.verified_by:
+            print("refused: status 'verified' needs --verified-by "
+                  "with a separate verifier identity", file=sys.stderr)
+            return 2
+        if args.verified_by == args.author:
+            print("refused: status 'verified' cannot be self-certified: "
                   "--verified-by must differ from --author",
                   file=sys.stderr)
             return 2
@@ -192,7 +206,8 @@ def main():
                    help="identity adding the row")
     p.add_argument("--verified-by", default=None,
                    help="separate verifier identity; required, and "
-                        "different from --author, for verdict 'verified'")
+                        "different from --author, for verdict 'verified' "
+                        "and for status 'verified'")
     p.add_argument("--evidence", default="")
     p.set_defaults(func=cmd_add)
 

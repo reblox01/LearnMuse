@@ -140,6 +140,10 @@ capsule cannot be written, the verdict is blocked.
 - A ledger row with verdict "verified" is not yours to
   write: the ledger refuses it unless it names a verifier
   identity different from the author, via --verified-by.
+- Status "verified" is gated the same way as verdict
+  "verified": the ledger refuses it without a separate
+  --verified-by, so status cannot be used to work around
+  the verdict gate.
 
 ## Outputs
 
