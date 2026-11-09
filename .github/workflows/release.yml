@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build skill pack zip
+        run: |
+          python3 - <<'EOF'
+          import zipfile
+          from pathlib import Path
+          tag = "${{ github.ref_name }}"
+          out = f"learnmuse-{tag}.zip"
+          include = ["skills", "docs", "tools", "scripts",
+                     "examples", "README.md", "LICENSE"]
+          with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
+              for item in include:
+                  p = Path(item)
+                  if p.is_file():
+                      zf.write(p, p.name)
+                  elif p.is_dir():
+                      for f in sorted(p.rglob("*")):
+                          if f.is_file():
+                              zf.write(f, f)
+          print(f"built {out}")
+          EOF
+          ls -la learnmuse-*.zip
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ github.ref_name }}" >/dev/null 2>&1; then
+            echo "release ${{ github.ref_name }} already exists, skipping"
+            exit 0
+          fi
+          gh release create "${{ github.ref_name }}" \
+            --title "LearnMuse ${{ github.ref_name }}" \
+            --notes "Skill pack release. Install by asking Muse to install LearnMuse ${{ github.ref_name }} from https://github.com/reblox01/LearnMuse, or download the zip below and install it with scripts/install.sh. Push a new tag for each release." \
+            learnmuse-*.zip

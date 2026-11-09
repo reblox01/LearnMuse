@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "assets/**"
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Every skill ships SKILL.md and skill.yaml
+        run: |
+          python3 - <<'EOF'
+          from pathlib import Path
+          skills = sorted(Path("skills").glob("learnmuse-*/"))
+          assert skills, "no skills found"
+          for skill in skills:
+              assert (skill / "SKILL.md").is_file(), f"missing SKILL.md in {skill}"
+              assert (skill / "skill.yaml").is_file(), f"missing skill.yaml in {skill}"
+          print(f"{len(skills)} skills OK")
+          EOF
+      - name: Every YAML file parses
+        run: |
+          python3 - <<'EOF'
+          import glob
+          import yaml
+          files = sorted(glob.glob("**/*.yaml", recursive=True) +
+                         glob.glob("**/*.yml", recursive=True))
+          assert files, "no YAML files found"
+          for f in files:
+              with open(f) as fh:
+                  yaml.safe_load(fh)
+          print(f"{len(files)} YAML files OK")
+          EOF
+      - name: sources.yaml parses and covers every skill
+        run: |
+          python3 - <<'EOF'
+          import yaml
+          from pathlib import Path
+          sources_path = Path("skills/learnmuse-update/sources.yaml")
+          assert sources_path.is_file(), "missing skills/learnmuse-update/sources.yaml"
+          with open(sources_path) as fh:
+              doc = yaml.safe_load(fh)
+          sources = doc.get("sources", [])
+          assert sources, "no sources in sources.yaml"
+          covered = {c for s in sources for c in s.get("covers", [])}
+          missing = [p.name for p in Path("skills").glob("learnmuse-*/")
+                     if p.name not in covered]
+          assert not missing, f"skills missing from sources.yaml covers: {missing}"
+          print(f"{len(sources)} sources OK, all skills covered")
+          EOF
+      - name: Ledger tool compiles and runs
+        run: |
+          python3 -m py_compile tools/ledger.py
+          rm -f /tmp/learnmuse-test.db
+          python3 tools/ledger.py init --db /tmp/learnmuse-test.db
+          python3 tools/ledger.py add --db /tmp/learnmuse-test.db --id smoke-test \
+            --title "Smoke test entry" --kind skill --status proposed --confidence 3 \
+            --evidence "CI smoke test"
+          python3 tools/ledger.py stats --db /tmp/learnmuse-test.db
+      - name: Install script is executable and dry-runs
+        run: |
+          test -x scripts/install.sh
+          bash -n scripts/install.sh
+          echo "install.sh syntax OK"
