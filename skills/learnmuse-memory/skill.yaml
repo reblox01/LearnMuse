@@ -1,0 +1,5 @@
+name: learnmuse-memory
+title: LearnMuse memory
+description: Manage bounded, curated memory across sessions. Save facts and preferences to MEMORY.md and USER.md, skip trivia and procedures, prune stale and conflicting entries, and search past sessions before asking the user again.
+category: Work and knowledge
+include_in_prompt: false
