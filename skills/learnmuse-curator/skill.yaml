@@ -1,0 +1,5 @@
+name: learnmuse-curator
+title: LearnMuse curator
+description: Weekly maintenance for the skill library. Track usage, mark skills stale after 14 days, archive after 30 days, never delete, pin and lock protection, ledger with rollback. Consolidation is off by default.
+category: Work and knowledge
+include_in_prompt: false
