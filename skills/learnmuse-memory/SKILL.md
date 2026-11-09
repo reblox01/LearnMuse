@@ -24,8 +24,28 @@ in memory.
 
 | Store | Purpose | Budget |
 |---|---|---|
-| `MEMORY.md` | Agent notes: environment facts, conventions, lessons learned, completed work | Keep tight, 8-15 entries, each one or two lines |
-| `USER.md` | User profile: preferences, communication style, expectations, pet peeves | Keep tight, 5-10 entries, each one or two lines |
+| `MEMORY.md` | Agent notes: environment facts, conventions, lessons learned, completed work | Keep tight, 8-15 entries, each one or two lines. Injected working summary budget: 2,200 chars, the Hermes budget. |
+| `USER.md` | User profile: preferences, communication style, expectations, pet peeves | Keep tight, 5-10 entries, each one or two lines. Injected working summary budget: 1,375 chars, the Hermes budget. |
+
+## Char budget, and what it does not mean
+
+The 2,200 / 1,375 char budgets above apply to the
+injected working summary a review writes, the short
+version that goes into a session, not to the full
+`~/MEMORY.md` file on disk. Hermes caps its memory
+files at those sizes because its memory is injected
+whole. Muse's full memory file is a longer curated
+record, and it must never be truncated or deleted to
+fit a Hermes number: on 9 Nov 2026 it was 37,604 chars,
+and cutting it to 2,200 would destroy real lessons.
+
+So the rule is: new entries are kept tight, one line,
+one lesson, and the injected summary stays within
+2,200 / 1,375 chars. A full `MEMORY.md` over budget
+is a signal, not a failure: run learnmuse-curator to
+consolidate entries, merge near-duplicates, and move
+dated detail to the daily log. Consolidate, never
+delete entries silently to hit a number.
 
 Both live in `~/MEMORY.md` and `~/memory/`, and are loaded
 into the session. Entries are compact and information-dense.
