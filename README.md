@@ -83,7 +83,7 @@ v0.1, eight skills, one commit per skill:
 | `learnmuse-curator` | Weekly prune and archive, never delete. Stale 14d, archive 30d, pin and lock. |
 | `learnmuse-verify` | Independent verifier for proposed skills. Verdicts verified, candidate, rejected, blocked. |
 | `learnmuse-update` | Phase-0 freshness check. `sources.yaml` is the single source of truth. |
-| `room-placement` | Place room items by real-room logic. Learned from the Basement Tycoon room-placement rule, from Sohail's "use logic" rule, validated by room samples v5 verified by eye in all 4 themes, commit 221cdc6. |
+| `room-placement` | Place room items by real-room logic. Learned from the Basement Tycoon room-placement rule, the "use logic" rule, validated by room samples v5 verified by eye in all 4 themes, commit 221cdc6. |
 
 Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
 ledger), `scripts/install.sh`, `examples/sample-review.md`
