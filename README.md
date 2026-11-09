@@ -70,22 +70,45 @@ every mutation is in a ledger you can roll back.
 
 ## Skills
 
-v0.1, in build order, one commit per skill:
+v0.1, seven skills, one commit per skill:
 
-- `learnmuse-orchestrator`: run a learning review end to end.
-- `learnmuse-review`: post-session background review.
-- `learnmuse-learn`: manual learn, turn a workflow into a skill.
-- `learnmuse-memory`: bounded memory and session search.
-- `learnmuse-curator`: weekly prune and archive, never delete.
-- `learnmuse-verify`: independent verifier for proposed skills.
-- `learnmuse-update`: phase-0 freshness check.
+| Skill | What it does |
+|---|---|
+| `learnmuse-orchestrator` | Run a learning review end to end. Owns the approval gate, the review log, and the budgets. |
+| `learnmuse-review` | Post-session background review. Proposes lessons, patch first, create last, never applies. |
+| `learnmuse-learn` | Manual learn. Turn a workflow or source into a skill, iron contract, provenance guard. |
+| `learnmuse-memory` | Bounded memory and session search. Facts go to memory, procedures go to skills. |
+| `learnmuse-curator` | Weekly prune and archive, never delete. Stale 14d, archive 30d, pin and lock. |
+| `learnmuse-verify` | Independent verifier for proposed skills. Verdicts verified, candidate, rejected, blocked. |
+| `learnmuse-update` | Phase-0 freshness check. `sources.yaml` is the single source of truth. |
+
+Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
+ledger), `scripts/install.sh`, `examples/sample-review.md`
+(a worked review with one staged proposal and its verify
+verdict), and three workflows (CI, auto-tag, release).
 
 See [`docs/RESEARCH.md`](docs/RESEARCH.md) for the full research
 and the build plan, and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 for the Hermes-to-Muse mapping.
 
+## Verify it yourself
+
+```bash
+git clone https://github.com/reblox01/LearnMuse.git
+cd LearnMuse
+./scripts/install.sh
+python3 tools/ledger.py init --db /tmp/learnmuse-test.db
+```
+
+Then run a learning review on a real past session with a
+known repeated mistake, stage the proposal, verify it, and
+install it only after approval. Run the same task again in
+a fresh session and check the mistake does not repeat.
+
 ## Status
 
-Research done 9 Nov 2026, three tracks, reports in
-`~/workspace/learnmuse-research/`. Build has not started yet
-beyond this scaffold and the research doc. Nothing pushed.
+v0.1 built 9 Nov 2026, local only. Research done the same
+day in three tracks, reports in `~/workspace/learnmuse-research/`.
+All 7 skills, the ledger tool, the install script, and the
+worked example are committed, one commit per step. Nothing
+pushed, no GitHub repo created yet.
