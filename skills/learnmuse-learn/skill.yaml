@@ -1,0 +1,5 @@
+name: learnmuse-learn
+title: LearnMuse learn
+description: Turn a workflow, source, or described procedure into a reusable skill. Builds in a temp folder, tests it, and installs only on a test pass plus your approval. Use when you want Muse to learn how to do something again.
+category: Work and knowledge
+include_in_prompt: false
