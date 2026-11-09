@@ -1,0 +1,5 @@
+name: learnmuse-review
+title: LearnMuse background review
+description: Replay a finished session and propose lessons as staged skill or memory changes. Be active, patch first, create last, never apply anything. Use after a session, as a review subagent, or in a daily cron.
+category: Work and knowledge
+include_in_prompt: false
