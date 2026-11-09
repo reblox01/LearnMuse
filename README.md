@@ -70,7 +70,7 @@ every mutation is in a ledger you can roll back.
 
 ## Skills
 
-v0.1, seven skills, one commit per skill:
+v0.1, eight skills, one commit per skill:
 
 | Skill | What it does |
 |---|---|
@@ -81,6 +81,7 @@ v0.1, seven skills, one commit per skill:
 | `learnmuse-curator` | Weekly prune and archive, never delete. Stale 14d, archive 30d, pin and lock. |
 | `learnmuse-verify` | Independent verifier for proposed skills. Verdicts verified, candidate, rejected, blocked. |
 | `learnmuse-update` | Phase-0 freshness check. `sources.yaml` is the single source of truth. |
+| `room-placement` | Place room items by real-room logic. Learned from the Basement Tycoon room-placement rule, from Sohail's "use logic" rule, validated by room samples v5 verified by eye in all 4 themes, commit 221cdc6. |
 
 Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
 ledger), `scripts/install.sh`, `examples/sample-review.md`
@@ -109,6 +110,6 @@ a fresh session and check the mistake does not repeat.
 
 v0.1 built 9 Nov 2026, local only. Research done the same
 day in three tracks, reports in `~/workspace/learnmuse-research/`.
-All 7 skills, the ledger tool, the install script, and the
+All 8 skills, the ledger tool, the install script, and the
 worked example are committed, one commit per step. Nothing
 pushed, no GitHub repo created yet.
