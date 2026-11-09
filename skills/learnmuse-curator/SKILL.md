@@ -121,6 +121,9 @@ user), action (create, edit, patch, archive, restore,
 purge, rollback), and before/after state. The ledger is
 telemetry, never a gate: if writing an entry fails, the
 mutation still goes through, and the failure is logged.
+One exception: a ledger row with verdict "verified" is
+never self-certified, the ledger refuses it unless it
+names a verifier identity different from the author.
 
 Restore an archived skill by moving it back from the
 archive folder and resetting its state to active. The

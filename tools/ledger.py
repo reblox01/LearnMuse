@@ -17,6 +17,14 @@ Usage:
       --title "Deploy staging: run migrate before restart" --kind skill \\
       --status proposed --confidence 3 \\
       --evidence "chat 2026-11-09: user corrected order of steps"
+  A row with verdict "verified" cannot be self-certified: it needs
+  --verified-by with a verifier identity different from --author.
+  Without that, the add is rejected with a non-zero exit.
+  python3 tools/ledger.py add --db <db> --id deploy-staging \\
+      --title "Deploy staging: run migrate before restart" --kind skill \\
+      --status verified --confidence 4 --verdict verified \\
+      --author review-agent --verified-by verify-agent \\
+      --evidence "verifier re-ran the proof unchanged"
   python3 tools/ledger.py list --db <db> --status proposed
   python3 tools/ledger.py stats --db <db>
   python3 tools/ledger.py export --db <db> --out ledger.json
@@ -35,6 +43,7 @@ CREATE TABLE IF NOT EXISTS entries (
     status TEXT NOT NULL DEFAULT 'proposed',
     confidence INTEGER NOT NULL DEFAULT 0,
     verdict TEXT,
+    verified_by TEXT,
     evidence TEXT,
     use_count INTEGER NOT NULL DEFAULT 0,
     last_used_at TEXT,
@@ -51,6 +60,11 @@ VERDICTS = {"verified", "candidate", "rejected", "blocked", None}
 def connect(db):
     conn = sqlite3.connect(db)
     conn.executescript(SCHEMA)
+    # Migrate older databases that predate the verified_by column.
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(entries)")]
+    if "verified_by" not in cols:
+        conn.execute("ALTER TABLE entries ADD COLUMN verified_by TEXT")
+        conn.commit()
     return conn
 
 
@@ -73,13 +87,24 @@ def cmd_add(args):
     if not 0 <= args.confidence <= 5:
         print("confidence must be 0-5", file=sys.stderr)
         return 2
+    if args.verdict == "verified":
+        if not args.verified_by:
+            print("refused: verdict 'verified' needs --verified-by "
+                  "with a separate verifier identity", file=sys.stderr)
+            return 2
+        if args.verified_by == args.author:
+            print("refused: verdict 'verified' cannot be self-certified: "
+                  "--verified-by must differ from --author",
+                  file=sys.stderr)
+            return 2
     conn = connect(args.db)
     conn.execute(
         "INSERT OR REPLACE INTO entries "
-        "(id, title, kind, status, confidence, verdict, evidence) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "(id, title, kind, status, confidence, verdict, verified_by, "
+        "evidence) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         (args.id, args.title, args.kind, args.status,
-         args.confidence, args.verdict, args.evidence),
+         args.confidence, args.verdict, args.verified_by, args.evidence),
     )
     conn.commit()
     print(f"stored {args.id} ({args.status}, confidence {args.confidence})")
@@ -101,6 +126,7 @@ def cmd_list(args):
     for row in conn.execute(query, params):
         print(f"{row['id']} [{row['kind']}] {row['status']} "
               f"conf={row['confidence']} verdict={row['verdict'] or '-'} "
+              f"verified_by={row['verified_by'] or '-'} "
               f"uses={row['use_count']} :: {row['title']}")
     return 0
 
@@ -162,6 +188,11 @@ def main():
     p.add_argument("--confidence", type=int, default=0)
     p.add_argument("--verdict", default=None,
                    choices=["verified", "candidate", "rejected", "blocked"])
+    p.add_argument("--author", default="author",
+                   help="identity adding the row")
+    p.add_argument("--verified-by", default=None,
+                   help="separate verifier identity; required, and "
+                        "different from --author, for verdict 'verified'")
     p.add_argument("--evidence", default="")
     p.set_defaults(func=cmd_add)
 

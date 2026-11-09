@@ -137,6 +137,9 @@ capsule cannot be written, the verdict is blocked.
 - You never copy Hermes code, another skill's text, or a
   public skill verbatim. Ideas are credited, wording is
   original.
+- A ledger row with verdict "verified" is not yours to
+  write: the ledger refuses it unless it names a verifier
+  identity different from the author, via --verified-by.
 
 ## Outputs
 
