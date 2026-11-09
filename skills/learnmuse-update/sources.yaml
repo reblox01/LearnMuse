@@ -1,0 +1,57 @@
+# Machine-readable source registry for the LearnMuse update check.
+#
+# This file is the single source of truth for the update check.
+# To find where a skill comes from, look up its name in the covers
+# list of an entry. Adding a source here is enough to have it
+# checked; no script edit is needed.
+#
+# Fields per source:
+#   name: short id used in check output.
+#   covers: skill names or layers this source is the origin of.
+#   repo: git URL, when the source is a git repo. Omitted for manual
+#     sources, which have no version endpoint.
+#   kind: self (this repo), reference (tracked, never vendored),
+#     manual (no version endpoint, reviewed by hand).
+#   check: git-head (compare upstream HEAD) or manual.
+#   auto_update: fast-forward-pull (LearnMuse itself only) or none.
+#     none means a delta becomes a follow-up task, never a rewrite.
+#   cli: command-line tools the skills use, or none. Recorded so the
+#     run machine can check availability; never auto-installed.
+sources:
+  - name: learnmuse
+    covers:
+      - learnmuse-orchestrator
+      - learnmuse-review
+      - learnmuse-learn
+      - learnmuse-memory
+      - learnmuse-curator
+      - learnmuse-verify
+      - learnmuse-update
+    repo: https://github.com/reblox01/LearnMuse.git
+    kind: self
+    check: git-head
+    auto_update: fast-forward-pull
+    cli: none
+  - name: hermes-agent
+    covers:
+      - methodology-reference
+    repo: https://github.com/NousResearch/hermes-agent.git
+    kind: reference
+    check: git-head
+    auto_update: none
+    cli: none
+  - name: openclaw-workshop
+    covers:
+      - methodology-reference
+    repo: https://github.com/openclaw/openclaw.git
+    kind: reference
+    check: git-head
+    auto_update: none
+    cli: none
+  - name: agentskills-spec
+    covers:
+      - methodology-reference
+    kind: manual
+    check: manual
+    auto_update: none
+    cli: none

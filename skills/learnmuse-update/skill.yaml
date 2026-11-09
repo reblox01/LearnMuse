@@ -1,0 +1,5 @@
+name: learnmuse-update
+title: LearnMuse update check
+description: Phase-0 freshness check before any LearnMuse run. Reads sources.yaml, fast-forward pulls LearnMuse itself only, reports reference deltas as follow-up tasks, never rewrites skills mid-run, never pushes.
+category: Work and knowledge
+include_in_prompt: false
