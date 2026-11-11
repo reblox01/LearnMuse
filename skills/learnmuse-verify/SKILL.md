@@ -61,9 +61,26 @@ Re-run each proof unchanged, in this order:
 4. Check the lesson is in the right place. A procedure in
    a memory entry fails. A fact about the user in a skill
    fails. One lesson lives in exactly one place.
-5. Check for duplication. If an existing skill or memory
-   entry already covers the lesson, the proposal fails as
-   a duplicate: the right action is a patch, not a new skill.
+5. Check for duplication and coexistence. Re-read the
+   existing skill library fresh and search memory for the
+   same lesson. Do not trust the proposal's coexistence
+   field on its own: quote the existing text yourself and
+   judge the field against what is actually there.
+   - If the proposal creates a new skill while an existing
+     skill or memory entry already covers the lesson, the
+     proposal fails as a duplicate: the right action is a
+     patch, not a new skill.
+   - If the proposal patches the covering skill, it passes
+     this check.
+   - If the proposal claims not covered but the library
+     shows coverage, the proposal fails: the evidence
+     contradicts the claim.
+   - If the proposal would install a second curator or a
+     second review over an existing native learning loop,
+     flag it candidate at best, and blocked unless the user
+     explicitly approved coexistence. LearnMuse layers on
+     top of what is already there, it never installs a
+     competing loop by default.
 6. Check the text. No invented commands, no copied passages,
    no claims the evidence does not support, no secrets.
 7. Check the shape. Name is class-level, description starts
@@ -171,6 +188,10 @@ capsule cannot be written, the verdict is blocked.
 
 - [ ] Proposal read fresh, target read fresh, evidence
   re-run unchanged.
+- [ ] Coexistence checked against the library read fresh:
+  the proposal's coexistence field matches what is
+  actually there, and a create for an already covered
+  lesson was rejected.
 - [ ] Exactly one verdict, with proof capsule and
   confidence 0-5.
 - [ ] Verified only at confidence 4-5, with a live check,
