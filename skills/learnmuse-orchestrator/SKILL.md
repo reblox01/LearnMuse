@@ -34,6 +34,10 @@ the review log:
 - Approval: the user will approve each proposal by name,
   one at a time, before anything is applied. A general
   "go ahead and learn" is not approval for a specific change.
+  Optional modes below can change how approval is given,
+  never whether it is given, and only if the user chose
+  the mode in writing for that run. Record the mode, or
+  "default", in the review log.
 
 If any input is missing, stop and ask. A vague session is not
 a reviewable session.
@@ -149,6 +153,41 @@ next review must say so.
 - One attempt per review pass. A failed review is logged and
   dropped, not retried in a loop.
 
+## Optional modes: tap-free and token-saver
+
+Approval stays ON by default. These modes are opt-in only,
+chosen by the user in writing for a named run or a named
+period, and recorded in the review log. A mode is never
+assumed, and no mode overrides the hard rules above: the
+verifier is still separate, a rejected or blocked proposal
+never lands, and the curator never deletes.
+
+1. Batch approve. The user reviews the verified list once
+   and approves by name in one message, for example
+   "apply 1, 3, and 4". This is still per-change approval
+   by name, just in one message instead of one tap per
+   proposal. A proposal not named in the batch does not land.
+2. Auto-install verified confidence 5 only. The user opts
+   in in writing, for a named review or a named period.
+   Only a proposal with verdict verified and confidence 5
+   installs without a per-change tap. Confidence 4,
+   candidate, rejected, and blocked never auto-install.
+   The user can revoke the opt-in at any time, and
+   revocation takes effect immediately. Every auto-install
+   is logged in the review log and the ledger, with the
+   opt-in recorded. Default: OFF.
+3. Weekly digest. Instead of telling the user about each
+   verified proposal as it lands, collect verified
+   proposals and send one digest per week. The user
+   approves by name from the digest. Nothing installs
+   before digest approval.
+4. Low-token mode. Weekly review cadence instead of daily,
+   max 3 proposals per review instead of 5, and curator
+   monthly instead of weekly. Use this when background
+   usage needs trimming. The daily cron in the README
+   prompt is the default, this mode replaces it only
+   when the user chooses it.
+
 ## Outputs
 
 - `learnmuse-runs/<review>/review-log.md`: the full record.
@@ -177,5 +216,9 @@ next review must say so.
   a before/after.
 - [ ] Every proposal has a verifier verdict, none missing.
 - [ ] Only approved, verified proposals were applied.
+- [ ] Mode recorded in the review log, default or named
+  opt-in. Auto-install, if used, was confidence 5 only,
+  opt-in in writing, and every auto-install is logged.
+  Batch approvals named each change.
 - [ ] Ledger rows exist for every proposal.
 - [ ] Closing message lists installed, rejected, and blocked.
