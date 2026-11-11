@@ -51,6 +51,44 @@ if the counts were never kept.
 If the evidence is missing, say which evidence is missing
 and stop. A review without evidence is a guess.
 
+## Coexistence check (mandatory, before staging)
+
+Do this before you propose anything. Muse may already
+learn on its own, and the user may already have a skill
+library, a native learning loop, or another pack writing
+to the same library. LearnMuse layers on top of what is
+already there. It never installs a competing loop.
+
+1. List the skills already installed in the library in
+   scope: the skills folder for this run, usually
+   `~/workspace/custom-skills`, `~/.muse/skills`, or the
+   repo `skills/` folder, plus any skill loaded in the
+   session under review. Search memory for the same lesson.
+2. For each candidate lesson, record one result, with the
+   skill name and the exact existing text quoted:
+   - Already covered: a skill or memory entry already
+     states the same rule.
+   - Partially covered: a skill states part of the rule
+     but misses a step, a pitfall, or a correction.
+   - Not covered: no skill or memory entry states it.
+3. If already covered: do not create a new skill, and do
+   not stage a duplicate proposal. Patch the covering
+   skill only if the lesson adds a step, a pitfall, or a
+   correction. If it adds nothing, log "already covered,
+   no change" and stop for that lesson.
+4. If partially covered: patch the covering skill. Never
+   create a parallel skill with the same rule.
+5. If not covered: proceed to the preference order below.
+6. If the user already has a native learning loop or
+   another pack writing to the same library, say so in
+   the review log, with the loop or pack named. Patch
+   existing skills, never install a second curator or a
+   second review that would fight the first, and do not
+   install a competing loop without the user's explicit go.
+
+A proposal that creates a new skill for a lesson already
+covered is a duplicate. The verifier rejects it.
+
 ## The review prompt
 
 Be active. Most sessions produce at least one lesson worth
@@ -142,6 +180,10 @@ Each proposal is one file in
   rule plus one clause of why, attached to the step it
   affects, stated once.
 - Kind: skill patch, new skill, support file, or memory entry.
+- Coexistence: the result of the coexistence check above,
+  already covered, partially covered, or not covered, with
+  the covering skill named and its existing text quoted.
+  A proposal with no coexistence field is not staged.
 
 A proposal with no evidence is not staged. A proposal that
 restates what is already loaded every turn (the repo's
@@ -187,5 +229,8 @@ restates what is already loaded every turn (the repo's
   error, or an unresolved failure.
 - [ ] No proposal duplicates a lesson already in memory or
   in another skill.
+- [ ] Coexistence check ran before staging, and every
+  proposal records its result with the covering skill
+  named and its existing text quoted.
 - [ ] "Nothing to save" was used honestly when nothing was
   worth saving.
