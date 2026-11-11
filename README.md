@@ -52,6 +52,23 @@ and run the weekly curator pass on my skills.
 Archive stale ones, never delete, and show me the ledger.
 ```
 
+Verifier-only install, for people who already have a
+learning loop and want just the verifier. One prompt:
+
+```text
+Install only the LearnMuse verifier from https://github.com/reblox01/LearnMuse:
+learnmuse-verify plus tools/ledger.py, nothing else.
+Use it to check any auto-created skill before trusting it:
+a reviewer that did not write the skill checks it first.
+Install nothing else from the pack.
+```
+
+Or from a terminal, in a clone:
+
+```bash
+./scripts/install.sh --verify-only
+```
+
 ## The loop, in one paragraph
 
 After a session, a review replays what happened and proposes
@@ -63,6 +80,49 @@ facts about your environment, skills hold how to do a class of
 task, and one lesson lives in exactly one place. Once a week the
 curator archives skills unused for 30 days, never deletes, and
 every mutation is in a ledger you can roll back.
+
+## What Muse already does vs what LearnMuse adds
+
+| Muse already does | LearnMuse adds |
+|---|---|
+| Skills, memory, and scheduled jobs | The connected loop: review a finished session, stage the lesson, verify it, then install it after your approval |
+| Create a skill when you ask for one | A background review that finds lessons on its own, plus a coexistence check so it patches what you already have instead of creating a duplicate |
+| Learn in the background, in its own way | An independent verifier that re-runs the proof, a ledger with use counts, and a curator that archives, never deletes |
+| Remember facts across sessions | A baseline audit of the existing library, to catch a bad rule already in place, not just a bad new proposal |
+
+## What it does for you, in concrete terms
+
+1. Teach once, it sticks. You correct Muse once, for
+   example "always check the live site before saying
+   something is missing". The review turns that into a
+   skill rule, the verifier checks it, you approve it,
+   and the next session just does it. No re-explaining.
+2. Stops repeating a mistake. The worked example in
+   `examples/sample-review.md` is a deploy that restarted
+   before migrating, twice. The fix is a skill patch:
+   migrate first, then restart. The next deploy is the
+   test: if it runs migrate first without being told,
+   the lesson landed.
+3. Overnight review. Once a day, or once a week in
+   low-token mode, the review reads yesterday's work,
+   stages at most 5 proposals (3 in low-token mode),
+   the verifier checks each one, and you approve by name
+   in the morning. Nothing installs without your approval.
+
+## Which skills actually get used
+
+The ledger records a use count per entry. Native learning
+does not surface that, LearnMuse does. From a clone:
+
+```bash
+python3 tools/ledger.py list --db <db>
+python3 tools/ledger.py stats --db <db>
+python3 tools/ledger.py use --db <db> --id <skill-id>
+```
+
+`list` shows `uses=` per entry. `stats` shows totals by
+status and kind. `use` records one use of an entry, so the
+count grows when a skill is actually used.
 
 ## Memory budgets
 
@@ -102,9 +162,13 @@ v0.1, eight skills, one commit per skill:
 | `room-placement` | Place room items by real-room logic. Learned from the Basement Tycoon room-placement rule, the "use logic" rule, validated by room samples v5 verified by eye in all 4 themes, commit 221cdc6. |
 
 Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
-ledger), `scripts/install.sh`, `examples/sample-review.md`
-(a worked review with one staged proposal and its verify
-verdict), and three workflows (CI, auto-tag, release).
+ledger), `scripts/install.sh` (full install, or
+`--verify-only` for the verifier alone),
+`examples/sample-review.md` (a worked review with one
+staged proposal and its verify verdict),
+`examples/baseline-audit.md` (a worked baseline audit
+with both classic bugs caught), and three workflows
+(CI, auto-tag, release).
 
 See [`docs/RESEARCH.md`](docs/RESEARCH.md) for the full research
 and the build plan, and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
@@ -124,10 +188,40 @@ known repeated mistake, stage the proposal, verify it, and
 install it only after approval. Run the same task again in
 a fresh session and check the mistake does not repeat.
 
+## What is new in v0.2
+
+- Verifier-only install: `./scripts/install.sh --verify-only`
+  installs only `learnmuse-verify` plus `tools/ledger.py`.
+- Coexistence check: the review scans the existing skill
+  library before staging, and the verifier re-checks it.
+  A lesson already covered is patched, not created twice.
+- Baseline audit mode in `learnmuse-verify`: audit an
+  existing library for a frozen retracted diagnosis,
+  near-verbatim rule copies across skills, and stale rules.
+  Worked example in `examples/baseline-audit.md`.
+- Memory budgets are configurable, and the full
+  `MEMORY.md` is never truncated to fit a summary budget.
+- Opt-in tap-free and token-saver modes in
+  `learnmuse-orchestrator`: batch approve, auto-install
+  verified confidence 5 only, weekly digest, and a
+  low-token mode (weekly review, max 3 proposals).
+  Approval stays ON by default.
+
+Thank you to Best_Caterpillar1682 for the verifier catch
+and for the suggestions behind v0.2. He cloned the repo,
+read the whole pack, wired the verifier in as a standalone
+protocol, and within the hour it flagged a sourcing skill
+that had frozen a wrong tool diagnosis as a permanent rule
+three weeks after the diagnosis was retracted, plus a
+second skill carrying near-verbatim copies of rules owned
+by three others. He suggested the verifier-only install
+and the coexistence check, and he called out the ledger
+use counts as genuinely good.
+
 ## Status
 
-v0.1 built 9 Nov 2026, local only. Research done the same
-day in three tracks, reports in `~/workspace/learnmuse-research/`.
-All 8 skills, the ledger tool, the install script, and the
-worked example are committed, one commit per step. Nothing
-pushed, no GitHub repo created yet.
+v0.1 released 9 Nov 2026, live at
+https://github.com/reblox01/LearnMuse. v0.2 is in progress
+locally, not pushed yet. Research for v0.1 was done the
+same day in three tracks, reports in
+`~/workspace/learnmuse-research/`.
