@@ -64,6 +64,16 @@ task, and one lesson lives in exactly one place. Once a week the
 curator archives skills unused for 30 days, never deletes, and
 every mutation is in a ledger you can roll back.
 
+## Memory budgets
+
+The 2,200 / 1,375 char budgets are for the injected
+summary only, not for the full `MEMORY.md` file on disk.
+The full file is never truncated to fit them, and the
+budgets are configurable: record new numbers in a review
+log and a `MEMORY.md` entry, and the review uses them.
+See `learnmuse-memory` for the full rule, including the
+token trade-off of a bigger summary.
+
 ## Safety
 
 - Nothing is installed, written to a skill, or written to memory
