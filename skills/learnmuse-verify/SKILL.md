@@ -22,6 +22,10 @@ opinion of its work.
   written.
 - On a skill the curator proposes to consolidate, before
   the consolidation is applied.
+- On an existing skill library, as a baseline audit. See
+  "Baseline audit mode" below. This is how a bad rule
+  already in the library gets caught, not just a bad
+  new proposal.
 
 Do not verify your own proposals. If you wrote it, you do
 not judge it. Hand it to a fresh verifier pass.
@@ -86,6 +90,61 @@ Re-run each proof unchanged, in this order:
 7. Check the shape. Name is class-level, description starts
    "Use when ...", `SKILL.md` is under 500 lines, reference
    files are topical, not one file per session.
+
+## Baseline audit mode
+
+Use this mode on an existing skill library, not on a new
+proposal. The question is not "is this new lesson good",
+it is "what is already wrong in the library". Read every
+skill fresh. Run the checks in order, across the whole
+library, not skill by skill in isolation.
+
+Inputs: the list of skills in scope, each read fresh, plus
+any retraction, correction, or newer evidence the user can
+point to. If a rule looks like a diagnosis, ask for the
+diagnosis source and whether it was later retracted. If
+no retraction evidence can be found, say so: a finding
+without that evidence is candidate, not confirmed.
+
+Checks:
+
+A. Frozen retracted diagnosis. A rule that states a
+   diagnosis as permanent, with words like always, never,
+   broken, or do not trust, where the diagnosis was later
+   retracted, corrected, or the tool was fixed. Flag it:
+   quote the rule, quote the retraction, name the skill.
+   Action: remove the rule or correct it to what is true
+   now. Never keep a retracted diagnosis as a permanent
+   rule. A rule frozen three weeks after its diagnosis
+   was retracted is the classic case.
+B. Near-verbatim copies. The same rule, or the same rule
+   with only wording tweaks, in 2 or more skills. Flag
+   every copy: quote each copy, name the owning skill,
+   the one whose class the rule belongs to. Action: keep
+   the rule in the owner only, and patch the other skills
+   to point to the owner. That is how a bad rule survives:
+   fixing one copy leaves the others in place.
+C. Stale rules. A rule that names a tool, a path, a
+   version, or a workflow that no longer exists, or that
+   contradicts a newer rule in the library. Flag it: quote
+   the rule, quote the newer evidence. Action: remove it
+   or update it to the current workflow.
+
+Output: one finding per bad rule, with skill, rule quoted,
+finding type (A, B, or C), evidence, recommended action,
+and a verdict per finding: confirmed, candidate, or clean.
+A skill with no findings is reported clean, with its name
+listed, so a clean result is a real result, not a skipped
+skill.
+
+The audit flags only. It never applies fixes. Each fix is
+staged as a proposal, verified separately under "How to
+verify" above, and applied only after the user approves
+that exact change. Ledger rows exist for every finding,
+via `tools/ledger.py`.
+
+A worked audit with both classic bugs is in
+`examples/baseline-audit.md`.
 
 ## Verdicts
 
@@ -201,3 +260,7 @@ capsule cannot be written, the verdict is blocked.
   not land.
 - [ ] No proposal was verified by its own author.
 - [ ] Ledger rows exist for every verdict.
+- [ ] Baseline audit, when run: every skill read fresh,
+  findings A, B, and C checked across the whole library,
+  clean skills listed by name, and every finding has a
+  ledger row. The audit applied no fix on its own.
