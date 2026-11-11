@@ -24,8 +24,8 @@ in memory.
 
 | Store | Purpose | Budget |
 |---|---|---|
-| `MEMORY.md` | Agent notes: environment facts, conventions, lessons learned, completed work | Keep tight, 8-15 entries, each one or two lines. Injected working summary budget: 2,200 chars, the Hermes budget. |
-| `USER.md` | User profile: preferences, communication style, expectations, pet peeves | Keep tight, 5-10 entries, each one or two lines. Injected working summary budget: 1,375 chars, the Hermes budget. |
+| `MEMORY.md` | Agent notes: environment facts, conventions, lessons learned, completed work | Keep tight, 8-15 entries, each one or two lines. Injected working summary budget: 2,200 chars by default, the Hermes budget, configurable, see below. |
+| `USER.md` | User profile: preferences, communication style, expectations, pet peeves | Keep tight, 5-10 entries, each one or two lines. Injected working summary budget: 1,375 chars by default, the Hermes budget, configurable, see below. |
 
 ## Char budget, and what it does not mean
 
@@ -46,6 +46,23 @@ is a signal, not a failure: run learnmuse-curator to
 consolidate entries, merge near-duplicates, and move
 dated detail to the daily log. Consolidate, never
 delete entries silently to hit a number.
+
+## Configurable budgets
+
+The 2,200 / 1,375 char numbers are defaults for the
+injected summary, not file limits, and the user can change
+them. To change a budget, the user states the new numbers
+in a review, and the numbers are recorded in the review
+log and in a `MEMORY.md` entry, for example: "summary
+budget 5,000 chars for MEMORY.md". The review then uses
+the recorded numbers and never silently reverts to the
+Hermes defaults. The full `MEMORY.md` file on disk is
+never truncated, deleted, or pruned to fit any summary
+budget, configured or default, and no new cap is a file
+limit. Raising the summary budget raises tokens per
+session, because more summary text is injected, so the
+trade-off is stated when a budget is raised: a bigger
+summary remembers more per session and costs more tokens.
 
 Both live in `~/MEMORY.md` and `~/memory/`, and are loaded
 into the session. Entries are compact and information-dense.
@@ -109,8 +126,10 @@ To save an entry:
 1. Check for a duplicate first. An exact duplicate is not
    added. A near-duplicate is merged into the existing entry,
    not added beside it.
-2. Check the budget. If the store is above 80 percent of its
-   budget, consolidate before adding: merge three separate
+2. Check the budget against the user's configured budget,
+   or the 2,200 / 1,375 defaults if no budget was recorded.
+   If the store is above 80 percent of its budget,
+   consolidate before adding: merge three separate
    "project uses X" entries into one comprehensive entry.
 3. Write the entry in one or two lines, with the fact and
    its context, no story.
@@ -177,6 +196,8 @@ in the secure vault, never in a memory file.
   skills, facts go to memory.
 - Keep it tight. If the store grows past its budget,
   consolidate before adding.
+- The full memory file is never truncated to fit a summary
+  budget, configured or default.
 - Never store a secret in memory.
 
 ## Verification checklist
@@ -184,8 +205,10 @@ in the secure vault, never in a memory file.
 - [ ] Entry is a fact or a preference, not a procedure.
 - [ ] Entry is one or two lines, no story, no date narrative.
 - [ ] No duplicate: checked, and merged if near-duplicate.
-- [ ] Budget checked: store is within budget, or entries
-  were consolidated first.
+- [ ] Budget checked against the user's configured budget,
+  or the defaults if none was recorded: store is within
+  budget, or entries were consolidated first. Full file
+  was not truncated to fit the summary budget.
 - [ ] Entry staged, user approved that exact entry.
 - [ ] Ledger row exists for the write.
 - [ ] Session search was tried before asking the user to
