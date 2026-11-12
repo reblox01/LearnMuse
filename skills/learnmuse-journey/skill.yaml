@@ -1,0 +1,5 @@
+name: learnmuse-journey
+title: LearnMuse learning journey
+description: Build the learning graph over skills, memory entries, and proposals as a timeline, rendered as a web artifact. Read-only proposals, edits staged for approval, delete archives.
+category: Work and knowledge
+include_in_prompt: false
