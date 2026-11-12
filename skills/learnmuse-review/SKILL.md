@@ -146,6 +146,17 @@ Look for these signals. Any one of them warrants action:
   strongest signal in the review: the existing skill either
   does not cover it, or the lesson never landed.
 
+## External second opinion (only when the user gave access and asked)
+
+When a design or plan is about to close a version and the user has
+given second-opinion access (Claude or GPT) and asked for the review,
+run it before closing. Share only the design or plan files, never
+secrets, credentials, or private data, and only for the exact share
+the user asked for. Apply the findings as fixes to the design, then
+run a second round to confirm the fixes and catch what the first
+round missed. The external review advises; it never approves an
+install, commit, push, or tag.
+
 ## Preference order
 
 Pick the earliest action that fits. Do not jump to creating

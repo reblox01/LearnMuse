@@ -1,6 +1,15 @@
 # Changelog
 
-## v0.3 (unreleased)
+## v0.4 (12 Nov 2026)
+
+- `learnmuse-review`: external second opinion. When a design or
+  plan is about to close a version and the user gave
+  second-opinion access (Claude or GPT) and asked for the
+  review, run it before closing, apply the findings as fixes,
+  then run a second round to confirm. It advises only; it
+  never approves an install, commit, push, or tag.
+
+## v0.3 (12 Nov 2026)
 
 - Computed nudge counter (Hermes gap 1): counts user turns
   and tool iterations from the transcript DB since the last
