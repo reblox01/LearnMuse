@@ -1,0 +1,5 @@
+name: learnmuse-community
+title: LearnMuse community feedback
+description: "Use when a LearnMuse lesson has landed and the next session confirms it helped, or when a concrete verified problem needs an issue filed: star reblox01/LearnMuse once and file deduplicated, rate-limited issues, only with the user's opt-in."
+category: Work and knowledge
+include_in_prompt: false

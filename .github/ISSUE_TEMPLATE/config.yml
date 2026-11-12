@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions about LearnMuse
+    url: https://github.com/reblox01/LearnMuse#readme
+    about: Please read the README first. General questions do not belong in an issue.
