@@ -35,18 +35,47 @@ wait, or say so and stop.
    log. You stage proposals as files. If there is nothing
    new to learn, you write "Nothing to save" in the log and
    stop. You never invent a proposal to fill a quota.
+4. Session-end extraction. When a session ends, extract
+   lessons from its transcript, not from a summary of it.
+   Muse has no session-end event, so this runs as a
+   scheduled pass inside the daily review cron: the cron
+   reads all new messages since the last review watermark
+   in `learnmuse-runs/review-state.md` (via `muse.db`,
+   `runtime.messages` and `agent.context_items`),
+   regardless of chat, and runs the review extraction on
+   them. The extraction is
+   staged, verified, and approved like any other review;
+   nothing is installed without the user's approval for
+   that exact change. Extraction may lag the actual end by
+   up to a day; that lag is the honest cost of having no
+   session-end event, and the daily cron remains the
+   backstop.
 
-Nudge counter (approximate, Muse has no daemon counter).
-Keep a review-log state file in
-`learnmuse-runs/review-state.md` with two counts: user
-turns since the last memory review, and tool iterations
-since the last skill review. Increment them in the review
-log. Fire a memory review at 10 turns and a skill review
+Nudge counter (computed, not hand-kept). Muse has no
+daemon counter and no live per-turn tick, so the counts
+are computed, not ticked: a scheduled run counts user
+turns and tool iterations from the transcript DB since
+the last review watermark in `learnmuse-runs/review-state.md`,
+and writes the computed counts back to that file with the
+timestamp. The queries, run with `muse.db` (read-only):
+
+- User turns: `SELECT count(*) FROM runtime.messages WHERE role = 'user' AND created_at > :watermark`
+- Tool iterations: `SELECT count(*) FROM agent.context_items WHERE item_kind = 'tool_call' AND created_at > :watermark`
+- Do not count from `runtime.tool_calls` or `runtime.tool_outputs`: both are empty in this deployment. `agent.context_items` is the source for tool iterations.
+
+Fire a memory review at 10 user turns and a skill review
 at 10 tool iterations, the same numbers as Hermes code.
-Label both counts approximate in every report. If the
-state file is missing, start both counts at 0 and say so.
-The daily cron is the backstop: it runs the review even
-if the counts were never kept.
+Counts are global across chats since the watermark, the
+same scope the hand-kept counts had. Label the counts as
+computed at the cron cadence, not live: a threshold
+crossed between runs fires at the next run, not at the
+turn. Doing the work resets the count: a memory review
+resets the turn count to 0, a skill review resets the
+iteration count to 0, the same reset Hermes does when the
+memory or skill_manage tool is used. If the state file is
+missing, start both counts at 0 and say so. The daily
+cron is the backstop: it runs the review even if the
+counts were never kept.
 
 If the evidence is missing, say which evidence is missing
 and stop. A review without evidence is a guess.
