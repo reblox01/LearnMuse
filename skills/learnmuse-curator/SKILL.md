@@ -132,16 +132,35 @@ the same name, which would shadow it.
 
 ## Usage telemetry
 
-The curator keeps one ledger row per skill with use count,
-view count, last used date, last patched date, created
-date, state (active, stale, archived), and pinned and
-locked flags. Counters increment when the skill is loaded
-into a conversation, viewed, or patched.
+The curator keeps one ledger row per skill in the central
+usage ledger, `~/workspace/learnmuse/skill-usage.db`, with
+use count, view count, last used date, last patched date,
+created date, state (active, stale, archived), and pinned
+and locked flags. The central ledger is the only store for
+usage counts: per-run ledger DBs (`learnmuse-runs/<run>/ledger.db`)
+record proposals, not usage, and must not be read as usage
+counts.
 
-Usage counts in Muse are approximate: there is no daemon
-counting loads. Counts come from review logs and ledger
-rows, and every report labels them as approximate. A
-decision that needs an exact count waits for evidence.
+Counters are recorded at use time, not reconstructed from
+review logs. When a skill is loaded into a conversation,
+viewed, or patched during a LearnMuse run, add its id to
+the central ledger if it has no row yet (`tools/ledger.py
+add --db ~/workspace/learnmuse/skill-usage.db --id <skill-id>
+--title <skill-title> --kind skill`), then record one use
+with `tools/ledger.py use --db ~/workspace/learnmuse/skill-usage.db --id <skill-id>`.
+The curator reads the same central ledger; its counts are
+exact as recorded, not estimated. A use that was not
+recorded is a missing count, and every report says so
+instead of labelling the counts approximate.
+
+There is no daemon counting loads (Hermes records in code
+on every load); the recording step is the agent's, and it
+runs only during LearnMuse runs, so foreground loads
+outside a LearnMuse run are not recorded. A low count is
+still absence of evidence, not proof of disuse: the
+never-used grace floor and the zero-uses rule still apply,
+and a decision that needs an exact count waits for
+evidence.
 
 ## Hard rules
 

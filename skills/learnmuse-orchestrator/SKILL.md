@@ -101,6 +101,8 @@ end-of-session review, as an isolated review subagent given a
 transcript excerpt, or as a daily cron reading the daily log.
 A cron review works from files, not from a live conversation.
 
+When you load, view, or patch a skill during this run, add its id to the central ledger if it has no row yet, then record one use with `tools/ledger.py use --db ~/workspace/learnmuse/skill-usage.db --id <skill-id>`.
+
 ## Phase 3: verify
 
 Run learnmuse-verify on every proposal, one at a time. The
