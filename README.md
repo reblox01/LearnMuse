@@ -148,7 +148,7 @@ token trade-off of a bigger summary.
 
 ## Skills
 
-v0.1, eight skills, one commit per skill:
+Eight skills in v0.1, one commit per skill, plus two more in v0.3 (10 total):
 
 | Skill | What it does |
 |---|---|
@@ -159,6 +159,8 @@ v0.1, eight skills, one commit per skill:
 | `learnmuse-curator` | Weekly prune and archive, never delete. Stale 14d, archive 30d, pin and lock. |
 | `learnmuse-verify` | Independent verifier for proposed skills. Verdicts verified, candidate, rejected, blocked. |
 | `learnmuse-update` | Phase-0 freshness check. `sources.yaml` is the single source of truth. |
+| `learnmuse-journey` | Build the learning graph over skills, memory entries, and proposals as a timeline, rendered as a web artifact. Read-only proposals, edits staged for approval, delete archives. |
+| `learnmuse-community` | Turn a good experience into a star and a real problem into an issue. Opt-in, off by default, dedupe by title, max one issue per day. |
 | `room-placement` | Place room items by real-room logic. Learned from the Basement Tycoon room-placement rule, the "use logic" rule, validated by room samples v5 verified by eye in all 4 themes, commit 221cdc6. |
 
 Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
@@ -218,10 +220,51 @@ by three others. He suggested the verifier-only install
 and the coexistence check, and he called out the ledger
 use counts as genuinely good.
 
+## What is new in v0.3
+
+- Computed nudge counter (Hermes gap 1): the review no
+  longer hand-keeps counts that never move. A scheduled
+  run counts user turns and tool iterations from the
+  transcript database since the last review watermark.
+  Honest limit: no live per-turn tick, a threshold crossed
+  between runs fires at the next run.
+- Session-end extraction (Hermes gap 2): the daily cron
+  also reads all new messages since the last review
+  watermark, regardless of chat, and runs the review
+  extraction on them. Honest limit: extraction lags by up
+  to a day, Muse has no session-end event.
+- Central usage ledger (Hermes gap 3): one ledger,
+  `skill-usage.db`, records each use at use time. Per-run
+  ledger DBs record proposals, not usage. Honest limit:
+  only LearnMuse-run loads are recorded, a low count is
+  absence of evidence.
+- New skill `learnmuse-journey`: the learning graph as a
+  timeline, rendered as a web artifact, rebuilt on demand.
+  Skills, memory entries, and read-only proposal nodes.
+  Edits staged for approval, delete archives.
+- New skill `learnmuse-community`: opt-in star and issue
+  filing for verified problems, with bug and idea issue
+  templates (see Community below).
+- Tags are two-part now (v0.2, v0.3), not three-part.
+
 ## Status
 
 v0.1 released 9 Nov 2026, live at
-https://github.com/reblox01/LearnMuse. v0.2 is in progress
-locally, not pushed yet. Research for v0.1 was done the
-same day in three tracks, reports in
-`~/workspace/learnmuse-research/`.
+https://github.com/reblox01/LearnMuse. v0.2 released
+11 Nov 2026. v0.3 is in progress locally, not pushed yet.
+Research for v0.1 was done the same day in three tracks,
+reports in `~/workspace/learnmuse-research/`.
+
+## Community
+
+`learnmuse-community` turns a good experience into a star,
+and a real problem into an issue, without you having to
+remember either. It is opt-in and off by default: it asks
+once, only after a lesson lands and the next session
+confirms it helped. On yes, it stars
+[reblox01/LearnMuse](https://github.com/reblox01/LearnMuse)
+once, and files issues for concrete verified problems
+only, deduplicated by title, max one per day. It never
+follows, comments, or opens PRs, and it never asks for a
+token: it needs `gh` authenticated, and skips silently
+without it.
