@@ -17,7 +17,7 @@
 # DEST/learnmuse-verify/tools/ledger.py, identical to the repo copy,
 # so the installed verifier is self contained. When run from a clone,
 # tools/ledger.py in the repo works the same way.
-# Without --verify-only, the full pack installs all 8 skills.
+# Without --verify-only, the full pack installs all 10 skills.
 set -euo pipefail
 
 usage() {
