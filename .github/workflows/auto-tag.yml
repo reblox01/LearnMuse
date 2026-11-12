@@ -50,22 +50,24 @@ jobs:
             echo "skip-release found, skipping."
             exit 0
           fi
-          latest=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          # Versions are two-part: v0.1, v0.2, v0.3. The matcher accepts
+          # the old three-part tags too (v0.1.0), so the scheme change
+          # does not lose the existing history; the patch part is
+          # ignored and the next tag is always two-part.
+          latest=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+(\.[0-9]+)?$' | head -1)
           if [ -z "$latest" ]; then
-            echo "new=v0.1.0" >> "$GITHUB_OUTPUT"
+            echo "new=v0.1" >> "$GITHUB_OUTPUT"
             echo "tagged=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           v=${latest#v}
-          major=${v%%.*}; rest=${v#*.}; minor=${rest%%.*}; patch=${rest#*.}
+          major=${v%%.*}; rest=${v#*.}; minor=${rest%%.*}
           if echo "$messages" | grep -q "\[release:major\]"; then
-            major=$((major + 1)); minor=0; patch=0
-          elif echo "$messages" | grep -q "\[release:minor\]"; then
-            minor=$((minor + 1)); patch=0
+            major=$((major + 1)); minor=0
           else
-            patch=$((patch + 1))
+            minor=$((minor + 1))
           fi
-          echo "new=v$major.$minor.$patch" >> "$GITHUB_OUTPUT"
+          echo "new=v$major.$minor" >> "$GITHUB_OUTPUT"
           echo "tagged=true" >> "$GITHUB_OUTPUT"
       - name: Create and push tag
         if: steps.version.outputs.tagged == 'true'
