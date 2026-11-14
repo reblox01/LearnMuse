@@ -27,7 +27,8 @@ sources:
       - learnmuse-curator
       - learnmuse-verify
       - learnmuse-update
-      - room-placement
+      - learnmuse-community
+      - learnmuse-journey
     repo: https://github.com/reblox01/LearnMuse.git
     kind: self
     check: git-head

@@ -148,7 +148,7 @@ token trade-off of a bigger summary.
 
 ## Skills
 
-Eight skills in v0.1, one commit per skill, plus two more in v0.3 (10 total):
+Seven skills in v0.1, one commit per skill, plus two more in v0.3 (9 total):
 
 | Skill | What it does |
 |---|---|
@@ -161,7 +161,6 @@ Eight skills in v0.1, one commit per skill, plus two more in v0.3 (10 total):
 | `learnmuse-update` | Phase-0 freshness check. `sources.yaml` is the single source of truth. |
 | `learnmuse-journey` | Build the learning graph over skills, memory entries, and proposals as a timeline, rendered as a web artifact. Read-only proposals, edits staged for approval, delete archives. |
 | `learnmuse-community` | Turn a good experience into a star and a real problem into an issue. Opt-in, off by default, dedupe by title, max one issue per day. |
-| `room-placement` | Place room items by real-room logic. Learned from the Basement Tycoon room-placement rule, the "use logic" rule, validated by room samples v5 verified by eye in all 4 themes, commit 221cdc6. |
 
 Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
 ledger), `scripts/install.sh` (full install, or
