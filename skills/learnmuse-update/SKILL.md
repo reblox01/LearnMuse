@@ -81,6 +81,13 @@ Fields per source:
   commit, a tag, or a push.
 - A run that skipped the check, or proceeded under a
   staleness warning, says so in its review log.
+- When a skill is added to the pack, add its name to the covers list of the
+  source it belongs to in the same commit. The CI validate step fails the
+  build when a skill has no covers entry, so a missing entry is a broken
+  master, not a cosmetic gap, and a fix sitting uncommitted does not fix CI.
+- The pack CI runs only on pushes to master/main and on pull requests. A
+  branch push alone triggers no run; open a pull request to get the validate
+  check on a branch.
 
 ## Outputs
 

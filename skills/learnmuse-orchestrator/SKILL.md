@@ -53,6 +53,12 @@ override them:
 - Approval of a proposal's content is not approval to apply
   it. The user approves the exact change, then the change is
   applied, then the log records it.
+- When the user gives a sharper order that replaces a staged proposal,
+  drop the staged proposal and log it as superseded, not rejected: the
+  old proposal's verification does not carry over, and the new order
+  needs its own proposal, its own verifier verdict, and the user's
+  approval by name before anything is applied. Never install the
+  superseded proposal alongside or instead of the new one.
 - The verifier is a separate role. The agent that wrote a
   proposal never verifies it. A proposal the verifier rejects
   does not land, and a proposal with no verdict does not land.
