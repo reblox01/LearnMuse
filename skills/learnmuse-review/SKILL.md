@@ -150,12 +150,28 @@ Look for these signals. Any one of them warrants action:
 
 When a design or plan is about to close a version and the user has
 given second-opinion access (Claude or GPT) and asked for the review,
-run it before closing. Share only the design or plan files, never
-secrets, credentials, or private data, and only for the exact share
-the user asked for. Apply the findings as fixes to the design, then
+run it before closing. When two reviewers are in flight, wait for both
+verdicts before starting fixes, so one fix round covers both. Share
+only the design or plan files, never secrets, credentials, or private
+data, and only for the exact share the user asked for. When files are
+attached or pasted as text, ask the reviewer to confirm it received
+and read all of them before it reviews: an attachment the reviewer
+never read, or a paste that interleaved, produces findings on a
+partial picture. Apply the findings as fixes to the design, then
 run a second round to confirm the fixes and catch what the first
-round missed. The external review advises; it never approves an
-install, commit, push, or tag.
+round missed. Check each finding against the real code before fixing
+it: a finding about a file the reviewer never saw may rest on a wrong
+assumption, so confirm the file and line first and record the
+correction when the code says otherwise. A reply the reviewer gives
+before the brief is a preliminary reply, not a verdict: only the
+brief-anchored reply counts, and a preliminary reply that contradicts
+it is discarded. When a reviewer chat hits its context limit, start a
+fresh chat and send a focused diff instead of re-pasting the full pack.
+When the reviewer channel is blocked, a wiped browser session or a
+human check that never clears, park the review, report it once, and
+restart only after the user signs in: do not burn retries in a loop
+while the channel is down. The external review advises; it never
+approves an install, commit, push, or tag.
 
 ## Preference order
 
