@@ -29,6 +29,7 @@ sources:
       - learnmuse-update
       - learnmuse-community
       - learnmuse-journey
+      - confirm-ambiguous-reference
     repo: https://github.com/reblox01/LearnMuse.git
     kind: self
     check: git-head

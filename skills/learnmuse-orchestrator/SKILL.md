@@ -135,6 +135,19 @@ For each approved proposal, apply it to the right place:
   `~/workspace/custom-skills/` as `SKILL.md` plus `skill.yaml`.
   A new skill is written to a temp folder first, checked, and
   only then moved into place.
+- A skill that exists in both places, the installed copy in
+  `~/workspace/custom-skills/` and the public pack copy in
+  `~/workspace/learnmuse/skills/`, gets the patch in both
+  copies in the same install step, then cmp-checked
+  byte-identical before the install is called done. A patch
+  applied to one copy only is drift, and drift costs a
+  separate sync branch and PR to fix.
+- Before pushing a branch or merging a PR to the public repo,
+  recheck the full diff and scan it for names, passwords,
+  tokens, secrets, API keys, credentials, and private data.
+  The recheck happens even when the change was already
+  approved: approval covers the proposal's text, the recheck
+  proves the diff on the branch is only that text.
 - A memory entry goes into `~/MEMORY.md` or `~/memory/`,
   following learnmuse-memory budgets.
 - Record every applied change in the ledger with

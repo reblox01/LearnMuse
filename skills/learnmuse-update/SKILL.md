@@ -85,6 +85,8 @@ Fields per source:
   source it belongs to in the same commit. The CI validate step fails the
   build when a skill has no covers entry, so a missing entry is a broken
   master, not a cosmetic gap, and a fix sitting uncommitted does not fix CI.
+- When a skill is removed from the pack, remove its name from the covers list in the same commit, so the registry never claims a source covers a skill that no longer exists. A stale covers entry is the same kind of gap as a missing one: the update check then reports the source as covering a skill that is gone.
+- `sources.yaml` itself lives in two copies, the installed copy in `~/workspace/custom-skills/learnmuse-update/` and the public pack copy in `~/workspace/learnmuse/skills/learnmuse-update/`. A covers change, add or remove, lands in both copies in the same step, then cmp-checked, the same way a skill patch does. A registry edited in one copy only is drift, and the update check then reads a stale registry.
 - The pack CI runs only on pushes to master/main and on pull requests. A
   branch push alone triggers no run; open a pull request to get the validate
   check on a branch.

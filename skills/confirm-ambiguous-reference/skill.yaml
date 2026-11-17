@@ -1,0 +1,4 @@
+name: confirm-ambiguous-reference
+description: "Confirm which thread, message, or item the user means before acting when they point with 'this', 'that', or 'abt this message' and more than one could fit."
+version: 1.0.0
+license: MIT

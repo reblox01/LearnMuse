@@ -157,7 +157,13 @@ data, and only for the exact share the user asked for. When files are
 attached or pasted as text, ask the reviewer to confirm it received
 and read all of them before it reviews: an attachment the reviewer
 never read, or a paste that interleaved, produces findings on a
-partial picture. Apply the findings as fixes to the design, then
+partial picture. When a file is pasted in parts, verify each part
+against the source file before sending it: slice from the file,
+check the boundary lines match, and never reconstruct a part's tail
+from memory. If the reviewer says a part looks truncated, re-verify
+the part against the source (byte-identity, line count) before
+re-sending anything: a part that checks out is complete, and
+re-pasting it blindly wastes the reviewer's context. Apply the findings as fixes to the design, then
 run a second round to confirm the fixes and catch what the first
 round missed. Check each finding against the real code before fixing
 it: a finding about a file the reviewer never saw may rest on a wrong
