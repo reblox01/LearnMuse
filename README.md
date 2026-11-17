@@ -148,7 +148,7 @@ token trade-off of a bigger summary.
 
 ## Skills
 
-Seven skills in v0.1, one commit per skill, plus two more in v0.3 (9 total):
+Seven skills in v0.1, one commit per skill, plus two more in v0.3, plus one more since (10 total):
 
 | Skill | What it does |
 |---|---|
@@ -161,6 +161,7 @@ Seven skills in v0.1, one commit per skill, plus two more in v0.3 (9 total):
 | `learnmuse-update` | Phase-0 freshness check. `sources.yaml` is the single source of truth. |
 | `learnmuse-journey` | Build the learning graph over skills, memory entries, and proposals as a timeline, rendered as a web artifact. Read-only proposals, edits staged for approval, delete archives. |
 | `learnmuse-community` | Turn a good experience into a star and a real problem into an issue. Opt-in, off by default, dedupe by title, max one issue per day. |
+| `confirm-ambiguous-reference` | Ask which thread, message, or item the user means before acting when they point with "this", "that", or "abt this message" and more than one could fit. |
 
 Supporting pieces: `tools/ledger.py` (stdlib SQLite learning
 ledger), `scripts/install.sh` (full install, or
